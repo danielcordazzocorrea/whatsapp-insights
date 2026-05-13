@@ -11,21 +11,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { MessageSquare, TrendingUp, Activity, Calendar, Clock } from "lucide-react";
+import { MessageSquare, TrendingUp, Activity, Calendar, Clock, Lock } from "lucide-react";
 
 type Mensagem = {
   id: number;
   created_at: string;
 };
-
-const REDACTED_NAMES = ["██████", "████████", "█████", "███████"];
-const REDACTED_MSGS = [
-  "███ ██████ ████ █████ ██ ██████",
-  "████████ ████ █████ ████",
-  "██████ ████ ██████ ████ ███",
-  "██ ████ ███████ ████ █████ ██ ███",
-  "██████ ████ ██████ ███ ██ █████",
-];
 
 export default function Index() {
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
@@ -187,28 +178,23 @@ export default function Index() {
                   <Activity className="h-4 w-4 text-primary live-dot" />
                 </div>
                 <div className="divide-y divide-border">
-                  {mensagens.slice(0, 15).map((m) => (
+                  {mensagens.slice(0, 15).map((m, index) => (
                     <div key={m.id} className="flex items-center gap-3 py-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary">
                         <MessageSquare className="h-4 w-4" />
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
-                          <span
-                            className="select-none truncate text-sm font-medium leading-none tracking-tight text-foreground/45"
-                            aria-label="Nome censurado"
-                          >
-                            {REDACTED_NAMES[m.id % REDACTED_NAMES.length]}
+                          <span className="truncate text-sm font-medium tracking-tight text-foreground">
+                            #Mensagem{index + 1}
                           </span>
                           <span className="shrink-0 text-xs text-muted-foreground">
                             {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                           </span>
                         </div>
-                        <span
-                          className="mt-1 block select-none truncate text-xs leading-tight tracking-tight text-muted-foreground/55"
-                          aria-label="Mensagem censurada"
-                        >
-                          {REDACTED_MSGS[m.id % REDACTED_MSGS.length]}
+                        <span className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-primary/80">
+                          <Lock className="h-2.5 w-2.5" />
+                          Conteúdo protegido
                         </span>
                       </div>
                     </div>
