@@ -11,32 +11,6 @@ Projeto pensado como portfólio: o schema do banco armazena **apenas timestamp e
 - **Automação:** n8n (WhatsApp Trigger, OpenAI Agent, Postgres Chat Memory, HTTP Request)
 - **Deploy:** Vercel
 
-## Arquitetura
-
-```
-                   Meta Cloud API
-                         │
-                         ▼
-          ┌──────── n8n Trigger ────────┐
-          │                             │
-          ▼                             ▼
-  filtra status webhooks       Supabase: row { who_sent: 'client' }
-  (sent/delivered/read)                 │
-                                        ▼
-                              OpenAI Agent + memória Postgres
-                                        │
-                                        ▼
-                              POST /messages (Graph API)
-                                        │
-                                        ▼
-                              Supabase: row { who_sent: 'bot' }
-
-                          Supabase Realtime
-                                  ▲
-                                  │
-                          Dashboard (React)
-```
-
 ## Schema
 
 ```sql
