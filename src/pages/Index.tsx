@@ -11,10 +11,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { MessageSquare, TrendingUp, Activity, Calendar, Clock, Lock } from "lucide-react";
+import { MessageSquare, TrendingUp, Activity, Clock, Lock, Bot, Send } from "lucide-react";
 
 type Mensagem = {
   id: number;
+  who_sent: "bot" | "client";
   created_at: string;
 };
 
@@ -27,7 +28,7 @@ export default function Index() {
     const load = async () => {
       const { data } = await supabase
         .from("historico_mensagem")
-        .select("id, created_at")
+        .select("id, who_sent, created_at")
         .order("created_at", { ascending: false })
         .limit(1000);
       if (!mounted) return;
@@ -64,12 +65,13 @@ export default function Index() {
       return d >= ontemStart && d < hojeStart;
     }).length;
     const semana = mensagens.filter((m) => new Date(m.created_at) >= semanaStart).length;
+    const enviadas = mensagens.filter((m) => m.who_sent === "bot").length;
     const variacao = ontem === 0 ? (hoje > 0 ? 100 : 0) : ((hoje - ontem) / ontem) * 100;
-    return { hoje, ontem, semana, total: mensagens.length, variacao };
+    return { hoje, ontem, semana, enviadas, total: mensagens.length, variacao };
   }, [mensagens]);
 
   const dadosDiarios = useMemo(() => {
-    const map = new Map<string, { dia: string; mensagens: number }>();
+    const map = new Map<string, { dia: string; recebidas: number; enviadas: number }>();
     for (let i = 13; i >= 0; i--) {
       const d = new Date();
       d.setHours(0, 0, 0, 0);
@@ -77,14 +79,16 @@ export default function Index() {
       const key = d.toISOString().slice(0, 10);
       map.set(key, {
         dia: d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }),
-        mensagens: 0,
+        recebidas: 0,
+        enviadas: 0,
       });
     }
     mensagens.forEach((m) => {
       const key = new Date(m.created_at).toISOString().slice(0, 10);
       const row = map.get(key);
       if (!row) return;
-      row.mensagens++;
+      if (m.who_sent === "bot") row.enviadas++;
+      else row.recebidas++;
     });
     return Array.from(map.values());
   }, [mensagens]);
@@ -131,26 +135,31 @@ export default function Index() {
           <>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <StatCard icon={<MessageSquare className="h-5 w-5" />} label="Mensagens hoje" value={stats.hoje} trend={stats.variacao} accent />
-              <StatCard icon={<Calendar className="h-5 w-5" />} label="Mensagens ontem" value={stats.ontem} />
+              <StatCard icon={<Send className="h-5 w-5" />} label="Respostas enviadas" value={stats.enviadas} />
               <StatCard icon={<Clock className="h-5 w-5" />} label="Últimos 7 dias" value={stats.semana} />
               <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Total (últ. 1000)" value={stats.total} />
             </div>
 
             <section className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <ChartCard title="Mensagens por dia" subtitle="Últimos 14 dias" className="lg:col-span-2">
+              <ChartCard title="Mensagens por dia" subtitle="Recebidas vs enviadas — últimos 14 dias" className="lg:col-span-2">
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={dadosDiarios}>
                     <defs>
-                      <linearGradient id="grad-msg" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="grad-rec" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.5} />
                         <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="grad-env" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--color-accent)" stopOpacity={0.4} />
+                        <stop offset="100%" stopColor="var(--color-accent)" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="dia" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                     <Tooltip content={<TooltipContent />} />
-                    <Area type="monotone" dataKey="mensagens" stroke="var(--color-primary)" strokeWidth={2} fill="url(#grad-msg)" />
+                    <Area type="monotone" dataKey="recebidas" stroke="var(--color-primary)" strokeWidth={2} fill="url(#grad-rec)" />
+                    <Area type="monotone" dataKey="enviadas" stroke="var(--color-accent)" strokeWidth={2} fill="url(#grad-env)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </ChartCard>
@@ -178,27 +187,49 @@ export default function Index() {
                   <Activity className="h-4 w-4 text-primary live-dot" />
                 </div>
                 <div className="divide-y divide-border">
-                  {mensagens.slice(0, 15).map((m, index) => (
-                    <div key={m.id} className="flex items-center gap-3 py-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary">
-                        <MessageSquare className="h-4 w-4" />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="truncate text-sm font-medium tracking-tight text-foreground">
-                            #Mensagem{index + 1}
-                          </span>
-                          <span className="shrink-0 text-xs text-muted-foreground">
-                            {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                  {mensagens.slice(0, 15).map((m, index) => {
+                    const bot = m.who_sent === "bot";
+                    return (
+                      <div key={m.id} className="flex items-center gap-3 py-3">
+                        <span
+                          className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                            bot ? "bg-accent/15 text-accent" : "bg-primary/15 text-primary"
+                          }`}
+                        >
+                          {bot ? <Bot className="h-4 w-4" /> : <MessageSquare className="h-4 w-4" />}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="flex items-center gap-2 truncate text-sm font-medium tracking-tight text-foreground">
+                              #Mensagem{index + 1}
+                              <span
+                                className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
+                                  bot
+                                    ? "bg-accent/15 text-accent"
+                                    : "bg-primary/15 text-primary"
+                                }`}
+                              >
+                                {bot ? "Bot" : "Cliente"}
+                              </span>
+                            </span>
+                            <span className="shrink-0 text-xs text-muted-foreground">
+                              {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                            </span>
+                          </div>
+                          <span
+                            className={`mt-1 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${
+                              bot
+                                ? "border-accent/20 bg-accent/5 text-accent"
+                                : "border-primary/20 bg-primary/5 text-primary/80"
+                            }`}
+                          >
+                            <Lock className="h-2.5 w-2.5" />
+                            Conteúdo protegido
                           </span>
                         </div>
-                        <span className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-primary/80">
-                          <Lock className="h-2.5 w-2.5" />
-                          Conteúdo protegido
-                        </span>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   {mensagens.length === 0 && (
                     <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma mensagem ainda.</p>
                   )}
