@@ -18,6 +18,15 @@ type Mensagem = {
   created_at: string;
 };
 
+const REDACTED_NAMES = ["██████", "████████", "█████", "███████"];
+const REDACTED_MSGS = [
+  "███ ██████ ████ █████ ██ ██████",
+  "████████ ████ █████ ████",
+  "██████ ████ ██████ ████ ███",
+  "██ ████ ███████ ████ █████ ██ ███",
+  "██████ ████ ██████ ███ ██ █████",
+];
+
 export default function Index() {
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -185,12 +194,22 @@ export default function Index() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="h-3 w-24 rounded bg-muted-foreground/20" aria-label="Nome censurado" />
+                          <span
+                            className="select-none truncate text-sm font-medium leading-none tracking-tight text-foreground/45"
+                            aria-label="Nome censurado"
+                          >
+                            {REDACTED_NAMES[m.id % REDACTED_NAMES.length]}
+                          </span>
                           <span className="shrink-0 text-xs text-muted-foreground">
                             {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                           </span>
                         </div>
-                        <span className="mt-1.5 block h-2.5 w-3/4 rounded bg-muted-foreground/15" aria-label="Mensagem censurada" />
+                        <span
+                          className="mt-1 block select-none truncate text-xs leading-tight tracking-tight text-muted-foreground/55"
+                          aria-label="Mensagem censurada"
+                        >
+                          {REDACTED_MSGS[m.id % REDACTED_MSGS.length]}
+                        </span>
                       </div>
                     </div>
                   ))}
