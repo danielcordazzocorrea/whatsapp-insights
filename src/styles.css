@@ -133,30 +133,6 @@
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 8px 32px rgba(18, 140, 126, 0.12), inset 0 1px 0 rgba(255,255,255,0.5);
-  border-radius: var(--radius);
-}
-
-/* Animated WhatsApp-colored background blobs */
-.wa-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-.wa-blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.55;
-  will-change: transform;
-}
-.glass {
   background: rgba(255, 255, 255, 0.32);
   backdrop-filter: blur(22px) saturate(180%);
   -webkit-backdrop-filter: blur(22px) saturate(180%);
