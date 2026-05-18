@@ -251,7 +251,7 @@ export default function Index() {
 
 function StatCard({ icon, label, value, trend, accent }: { icon: React.ReactNode; label: string; value: number; trend?: number; accent?: boolean; }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]" style={{ background: "var(--gradient-card)" }}>
+    <div className="glass relative overflow-hidden rounded-2xl p-6 shadow-[var(--shadow-card)]">
       {accent && <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full opacity-30 blur-3xl" style={{ background: "var(--gradient-primary)" }} />}
       <div className="relative flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
