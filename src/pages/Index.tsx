@@ -271,7 +271,7 @@ function StatCard({ icon, label, value, trend, accent }: { icon: React.ReactNode
 
 function ChartCard({ title, subtitle, children, className = "" }: { title: string; subtitle?: string; children: React.ReactNode; className?: string; }) {
   return (
-    <div className={`rounded-2xl border border-border p-6 shadow-[var(--shadow-card)] ${className}`} style={{ background: "var(--gradient-card)" }}>
+    <div className={`glass rounded-2xl p-6 shadow-[var(--shadow-card)] ${className}`}>
       <div className="mb-4">
         <h3 className="text-sm font-semibold">{title}</h3>
         {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
