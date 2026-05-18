@@ -184,7 +184,7 @@ export default function Index() {
             </section>
 
             <section className="mt-8">
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+              <div className="glass rounded-2xl p-6 shadow-[var(--shadow-card)]">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-semibold">Mensagens recentes</h3>
