@@ -109,6 +109,12 @@ export default function Index() {
 
   return (
     <div className="min-h-screen px-4 py-8 sm:px-8 lg:px-12">
+      <div aria-hidden className="wa-bg">
+        <span className="wa-blob b1" />
+        <span className="wa-blob b2" />
+        <span className="wa-blob b3" />
+        <span className="wa-blob b4" />
+      </div>
       <div className="mx-auto max-w-7xl">
         <header className="mb-10">
           <div className="mb-2 flex items-center gap-2">
