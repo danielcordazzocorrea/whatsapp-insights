@@ -109,6 +109,12 @@ export default function Index() {
 
   return (
     <div className="min-h-screen px-4 py-8 sm:px-8 lg:px-12">
+      <div aria-hidden className="wa-bg">
+        <span className="wa-blob b1" />
+        <span className="wa-blob b2" />
+        <span className="wa-blob b3" />
+        <span className="wa-blob b4" />
+      </div>
       <div className="mx-auto max-w-7xl">
         <header className="mb-10">
           <div className="mb-2 flex items-center gap-2">
@@ -178,7 +184,7 @@ export default function Index() {
             </section>
 
             <section className="mt-8">
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+              <div className="glass rounded-2xl p-6 shadow-[var(--shadow-card)]">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-semibold">Mensagens recentes</h3>
@@ -245,7 +251,7 @@ export default function Index() {
 
 function StatCard({ icon, label, value, trend, accent }: { icon: React.ReactNode; label: string; value: number; trend?: number; accent?: boolean; }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]" style={{ background: "var(--gradient-card)" }}>
+    <div className="glass relative overflow-hidden rounded-2xl p-6 shadow-[var(--shadow-card)]">
       {accent && <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full opacity-30 blur-3xl" style={{ background: "var(--gradient-primary)" }} />}
       <div className="relative flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
@@ -265,7 +271,7 @@ function StatCard({ icon, label, value, trend, accent }: { icon: React.ReactNode
 
 function ChartCard({ title, subtitle, children, className = "" }: { title: string; subtitle?: string; children: React.ReactNode; className?: string; }) {
   return (
-    <div className={`rounded-2xl border border-border p-6 shadow-[var(--shadow-card)] ${className}`} style={{ background: "var(--gradient-card)" }}>
+    <div className={`glass rounded-2xl p-6 shadow-[var(--shadow-card)] ${className}`}>
       <div className="mb-4">
         <h3 className="text-sm font-semibold">{title}</h3>
         {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
