@@ -206,18 +206,18 @@ export default function Index() {
                         </span>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="flex items-center gap-2 truncate text-sm font-medium tracking-tight text-foreground">
-                              #Mensagem{index + 1}
-                              <span
-                                className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
-                                  bot
-                                    ? "bg-accent/15 text-accent"
-                                    : "bg-primary/15 text-primary"
-                                }`}
-                              >
-                                {bot ? "Bot" : "Cliente"}
-                              </span>
+                          <span className={`flex items-center gap-2 truncate text-sm font-medium tracking-tight ${bot ? 'text-accent' : 'text-foreground'}`}>
+                            #Mensagem{index + 1}
+                            <span
+                              className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
+                                bot
+                                  ? "bg-accent/15 text-accent"
+                                  : "bg-primary/15 text-primary"
+                              }`}
+                            >
+                              {bot ? "Bot" : "Cliente"}
                             </span>
+                          </span>
                             <span className="shrink-0 text-xs text-muted-foreground">
                               {new Date(m.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                             </span>
