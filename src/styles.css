@@ -37,46 +37,45 @@
 :root {
   --radius: 0.75rem;
 
-  /* Light elegant dashboard - with glassmorphism */
-  --background: oklch(0.95 0.01 240);
-  --foreground: oklch(0.15 0.01 240);
+  /* Dark elegant dashboard - with glassmorphism */
+  --background: oklch(0.16 0.015 220);
+  --foreground: oklch(0.96 0.01 220);
 
-  --card: oklch(0.92 0.01 240);
+  --card: oklch(0.20 0.015 220);
   --color-card-foreground: var(--foreground);
 
-  --popover: oklch(0.92 0.01 240);
+  --popover: oklch(0.18 0.015 220);
   --color-popover-foreground: var(--foreground);
 
-  --primary: oklch(0.72 0.18 150);
-  --color-primary-foreground: var(--foreground);
+  --primary: oklch(0.78 0.17 150);
+  --color-primary-foreground: oklch(0.15 0.01 240);
   --color-primary-glow: var(--primary-glow);
 
-  /* WhatsApp green for secondary */
   --color-secondary: #25D366;
   --color-secondary-foreground: var(--foreground);
 
-  --color-muted: oklch(0.85 0.01 240);
-  --color-muted-foreground: oklch(0.5 0.01 240);
+  --color-muted: oklch(0.26 0.015 220);
+  --color-muted-foreground: oklch(0.70 0.01 220);
 
-  --color-accent: oklch(0.65 0.15 200);
-  --color-accent-foreground: oklch(0.15 0.01 240);
+  --color-accent: oklch(0.72 0.14 200);
+  --color-accent-foreground: oklch(0.12 0.01 240);
 
   --color-destructive: oklch(0.65 0.22 25);
   --color-destructive-foreground: oklch(0.98 0.01 240);
 
-  --color-success: oklch(0.72 0.18 150);
+  --color-success: oklch(0.78 0.17 150);
 
-  --color-border: oklch(0.8 0.01 240);
-  --color-input: oklch(0.8 0.01 240);
-  --color-ring: oklch(0.72 0.18 150);
+  --color-border: oklch(0.30 0.015 220);
+  --color-input: oklch(0.28 0.015 220);
+  --color-ring: oklch(0.78 0.17 150);
 
-  --color-chart-1: oklch(0.72 0.18 150);
-  --color-chart-2: oklch(0.65 0.15 200);
+  --color-chart-1: oklch(0.78 0.17 150);
+  --color-chart-2: oklch(0.72 0.14 200);
 
   --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-card: linear-gradient(160deg, oklch(0.9 0.01 240), oklch(0.88 0.005 240));
-  --shadow-glow: 0 0 40px -10px oklch(0.72 0.18 150 / 0.1);
-  --shadow-card: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -1px oklch(0 0 0 / 0.06);
+  --gradient-card: linear-gradient(160deg, oklch(0.22 0.015 220), oklch(0.18 0.01 220));
+  --shadow-glow: 0 0 40px -10px oklch(0.78 0.17 150 / 0.25);
+  --shadow-card: 0 10px 30px -10px oklch(0 0 0 / 0.5), 0 2px 6px -1px oklch(0 0 0 / 0.3);
 }
 
 @layer base {
@@ -84,15 +83,14 @@
     border-color: var(--color-border);
   }
   body {
-    background-color: var(--color-background);
+    background-color: #0a0f14;
     color: var(--color-foreground);
     font-feature-settings: "cv11", "ss01";
     font-family: 'Inter', system-ui, sans-serif;
     background-image:
-      radial-gradient(ellipse at 15% 10%, rgba(37, 211, 102, 0.18), transparent 55%),
-      radial-gradient(ellipse at 85% 90%, rgba(18, 140, 126, 0.16), transparent 55%),
-      radial-gradient(circle at 50% 50%, rgba(220, 248, 198, 0.12), transparent 60%),
-      linear-gradient(135deg, #eaf7f0 0%, #f3f9f5 50%, #e8f4ee 100%);
+      radial-gradient(ellipse at 50% 0%, rgba(37, 211, 102, 0.05), transparent 60%),
+      radial-gradient(ellipse at 100% 100%, rgba(18, 140, 126, 0.04), transparent 60%),
+      linear-gradient(180deg, #0a0f14 0%, #070b0f 100%);
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
@@ -102,26 +100,31 @@
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(18,140,126,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(18,140,126,0.05) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      linear-gradient(rgba(37,211,102,0.11) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,211,102,0.11) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 88%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 88%);
+    pointer-events: none;
+    z-index: -2;
+    animation: gridDrift 28s linear infinite;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(37,211,102,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,211,102,0.04) 1px, transparent 1px);
+    background-size: 280px 280px;
     pointer-events: none;
     z-index: -2;
   }
 }
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+@keyframes gridDrift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 56px 56px, 56px 56px; }
 }
 
 @keyframes pulse-dot {
@@ -133,22 +136,22 @@
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(18, 140, 126, 0.12), inset 0 1px 0 rgba(255,255,255,0.55);
+  background: rgba(18, 28, 36, 0.45);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.06);
   border-radius: var(--radius);
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, background 0.4s ease, border-color 0.4s ease;
 }
 .glass:hover {
   transform: translateY(-4px) scale(1.012);
-  background: rgba(255, 255, 255, 0.42);
-  border-color: rgba(37, 211, 102, 0.45);
-  box-shadow: 0 16px 48px rgba(18, 140, 126, 0.22), inset 0 1px 0 rgba(255,255,255,0.7);
+  background: rgba(22, 34, 42, 0.55);
+  border-color: rgba(37, 211, 102, 0.35);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(37,211,102,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-/* Animated WhatsApp-colored background blobs */
+/* Subtle background accent — green almost removed */
 .wa-bg {
   position: fixed;
   inset: 0;
@@ -159,25 +162,19 @@
 .wa-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(90px);
-  opacity: 0.5;
+  filter: blur(120px);
   will-change: transform;
 }
-.wa-blob.b1 { width: 560px; height: 560px; background: #25D366; top: -140px; left: -140px; animation: floatA 18s ease-in-out infinite; }
-.wa-blob.b2 { width: 480px; height: 480px; background: #128C7E; bottom: -160px; right: -120px; animation: floatB 22s ease-in-out infinite; }
-.wa-blob.b3 { width: 340px; height: 340px; background: #DCF8C6; top: 18%; right: 18%; animation: floatA 20s ease-in-out infinite reverse; opacity: 0.55; }
-.wa-blob.b4 { width: 280px; height: 280px; background: #25D366; bottom: 20%; left: 30%; animation: floatC 26s ease-in-out infinite; opacity: 0.35; }
+.wa-blob.b1 { width: 520px; height: 520px; background: #25D366; top: -180px; left: -160px; opacity: 0.08; animation: floatA 24s ease-in-out infinite; }
+.wa-blob.b2 { width: 460px; height: 460px; background: #128C7E; bottom: -200px; right: -140px; opacity: 0.07; animation: floatB 28s ease-in-out infinite; }
+.wa-blob.b3 { display: none; }
+.wa-blob.b4 { display: none; }
 
 @keyframes floatA {
   0%, 100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(80px, 60px) scale(1.15); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
 }
 @keyframes floatB {
   0%, 100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(-90px, -50px) scale(1.1); }
-}
-@keyframes floatC {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33% { transform: translate(-60px, 70px) scale(1.08); }
-  66% { transform: translate(70px, -40px) scale(0.95); }
+  50% { transform: translate(-70px, -40px) scale(1.08); }
 }
